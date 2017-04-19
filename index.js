@@ -126,7 +126,7 @@ app.post('/webhook/', function(req, res) {
          }
          if(event.message && event.message.text && isFirst === 5){
             sendText(sender, "Congratz :))")
-            sendText(sender, tripDay+"/"+tripMonth+"/"+tripYear+" "+tripSource+"-"+tripDest)
+            sendText(sender, tripDay+"/"+tripMonth+"/"+tripYear+" "+tripSource+"-"+tripDest+" "+tripPassenger+" Passengers")
             if(event.message.text !== " "){
                 isFirst=-1
                 continue
