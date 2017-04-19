@@ -166,6 +166,3 @@ function getSkyScannerData(){
 app.listen(app.get('port'), function() {
 	console.log("running: port")
 })
-//bu bir testtir
-
-//test
