@@ -28,6 +28,7 @@ var tripMonth
 var tripYear
 var tripDest
 var tripSource
+var tripPassenger
 // Facebook 
 
 app.get('/webhook/', function(req, res) {
@@ -83,7 +84,7 @@ app.post('/webhook/', function(req, res) {
          }
          }
          if(event.message && event.message.text && isFirst === 2){
-         if(event.message.text !== String(year) && (event.message.text.size<5 && event.message.text.size>2)){
+         if(event.message.text !== String(year) && (event.message.text.length<5 && event.message.text.length>2)){
             tripSource=event.message.text
             isFirst = 3
             invalidCheck=false
@@ -95,7 +96,7 @@ app.post('/webhook/', function(req, res) {
          }
          }
          if(event.message && event.message.text && isFirst === 3){
-         if(event.message.text !== tripSource && (event.message.text.size<5 && event.message.text.size>2)){
+         if(event.message.text !== tripSource && (event.message.text.length<5 && event.message.text.length>2)){
             tripDest=event.message.text
             isFirst = 4
             invalidCheck=false
@@ -109,18 +110,19 @@ app.post('/webhook/', function(req, res) {
          }
          }
          if(event.message && event.message.text && isFirst === 4){
-         if(event.message.text !== tripDest && (event.message.text.size<11 && event.message.text.size>0)){
-         tripPassenger=event.message.text
-         isFirst = 5
-         invalidCheck=false
-         }
-         else if(invalidCheck === false){
-            sendText(sender, "Please Enter Passanger Number (1-10)")
-            invalidCheck=true
-         }
-         else{
-            sendText(sender, "Invalid Input, Please Enter Correct Passenger Number")
-         }
+         	var passNum = parseInt(event.message.text)
+	         if(passNum < 11 && passNum >0){
+		         tripPassenger=event.message.text
+		         isFirst = 5
+		         invalidCheck=false
+	         }
+	         else if(invalidCheck === false){
+	            sendText(sender, "Please Enter Passanger Number (1-10)")
+	            invalidCheck=true
+	         }
+	         else{
+	            sendText(sender, "Invalid Input, Please Enter Correct Passenger Number")
+	         }
          }
          if(event.message && event.message.text && isFirst === 5){
             sendText(sender, "Congratz :))")
@@ -128,7 +130,7 @@ app.post('/webhook/', function(req, res) {
             if(event.message.text !== " "){
                 isFirst=-1
                 continue
-         }
+         		}
          }
 	}
 	getSkyScannerData()
