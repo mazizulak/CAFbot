@@ -127,13 +127,14 @@ app.post('/webhook/', function(req, res) {
          if(event.message && event.message.text && isFirst === 5){
             sendText(sender, "Congratz :))")
             sendText(sender, tripDay+"/"+tripMonth+"/"+tripYear+" "+tripSource+"-"+tripDest+" "+tripPassenger+" Passengers")
+            getSkyScannerData(sender)
             if(event.message.text !== " "){
                 isFirst=-1
                 continue
          		}
          }
 	}
-	getSkyScannerData()
+	
 	res.sendStatus(200)
 })
 
@@ -157,11 +158,16 @@ function sendText(sender, text) {
 }
 
 
-function getSkyScannerData(){
+function getSkyScannerData(sender){
 	var request = require('request');
-	request('http://ip.jsontest.com/', function (error, response, body) {
+	var baseUrl = "http://partners.api.skyscanner.net/apiservices/browsequotes/v1.0/TR/TRY/en-US/"
+
+	var requestURI = baseUrl + tripSource + "/" + tripDest + "/" + tripYear + "-" + tripMonth + "-" + tripDay +"//?apiKey=" + apiKey 
+	request(requestURI, function (error, response, body) {
 		var info = JSON.parse(body);
-		console.log(info.ip + " Bu bizim ip adresi");
+		console.log(info.Carriers.Name + " Bu bizim ip adresi");
+		sendText(sender,info.Carriers.Name + "has a flight with cost: " + info.Quotes.MinPrice + "TRY")
+		sendText(sender,"Departure Time: " + info.Quotes.OutboundLeg.DepartureDate) 
 	});
 }
 
