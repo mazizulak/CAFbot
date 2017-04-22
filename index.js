@@ -167,13 +167,15 @@ function getSkyScannerData(sender){
 	var requestURI = baseUrl + tripSource + "/" + tripDest + "/" + tripYear + "-" + tripMonth + "-" + tripDay +"//?apiKey=" + apiKey 
 	console.log("RequestURI: ",requestURI)
 	request(requestURI, function (error, response, body) {
-		if(error){
-			sendText(sender, "There is an error due to given information please try again.")
-		}
 		var info = JSON.parse(body);
-		console.log(info)
-		sendText(sender,info.Carriers.Name + "has a flight with cost: " + info.Quotes.MinPrice + "TRY")
-		sendText(sender,"Departure Time: " + info.Quotes.OutboundLeg.DepartureDate) 
+		if(info.ValidationErrors){
+			sendText(sender, "There is an error due to given information please try again.")
+		}else{
+			console.log(info)
+			sendText(sender,info.Carriers.Name + "has a flight with cost: " + info.Quotes.MinPrice + "TRY")
+			sendText(sender,"Departure Time: " + info.Quotes.OutboundLeg.DepartureDate)
+		}
+		 
 	});
 }
 
