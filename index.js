@@ -44,33 +44,33 @@ app.post('/webhook/', function(req, res) {
 		let event = messaging_events[i]
 		let sender = event.sender.id
 		if (event.message && event.message.text && isFirst === -1) {
-			let text = event.message.text
-         var day=parseInt(event.message.text)
-         if(day > 0 && day < 32){
-            tripDay=day
-            isFirst = 0
-            invalidCheck=false
-         }else if(invalidCheck === false){
-         	console.log("sender: ", sender)
-         	console.log("token: ", token)
-            sendText(sender, "Hello Welcome to CAF Reservation Bot.Now Please can you type the day of the flight (1-31)")
-            invalidCheck=true
-         }else{
-            sendText(sender, "Invalid Input, Please can you type the day of the flight (1-31)")
-         }
+			 let text = event.message.text
+	         var day=parseInt(event.message.text)
+	         if(day > 0 && day < 32){
+	            tripDay=makeTwoDigits(day)
+	            isFirst = 0
+	            invalidCheck=false
+	         }else if(invalidCheck === false){
+	         	console.log("sender: ", sender)
+	         	console.log("token: ", token)
+	            sendText(sender, "Hello Welcome to CAF Reservation Bot.Now Please can you type the day of the flight (1-31)")
+	            invalidCheck=true
+	         }else{
+	            sendText(sender, "Invalid Input, Please can you type the day of the flight (1-31)")
+	         }
          }
 		if(event.message && event.message.text && isFirst === 0){
-         var month=parseInt(event.message.text)
-         if(month > 0 && month < 13){
-            tripMonth=month
-            isFirst = 1
-            invalidCheck=false
-         }else if(invalidCheck === false){
-            sendText(sender, "Thank You , Now Please can you type the month of the flight (1-12)")
-            invalidCheck=true
-         }else{
-            sendText(sender, "Invalid Input, Please can you type the month of the flight (1-12)")
-         }
+	         var month=parseInt(event.message.text)
+	         if(month > 0 && month < 13){
+	            tripMonth=makeTwoDigits(month)
+	            isFirst = 1
+	            invalidCheck=false
+	         }else if(invalidCheck === false){
+	            sendText(sender, "Thank You , Now Please can you type the month of the flight (1-12)")
+	            invalidCheck=true
+	         }else{
+	            sendText(sender, "Invalid Input, Please can you type the month of the flight (1-12)")
+	         }
 		}
          if(event.message && event.message.text && isFirst === 1){
          var year=parseInt(event.message.text)
@@ -167,11 +167,18 @@ function getSkyScannerData(sender){
 	var requestURI = baseUrl + tripSource + "/" + tripDest + "/" + tripYear + "-" + tripMonth + "-" + tripDay +"//?apiKey=" + apiKey 
 	console.log("RequestURI: ",requestURI)
 	request(requestURI, function (error, response, body) {
+		if(error){
+			sendText(sender, "There is an error due to given information please try again.")
+		}
 		var info = JSON.parse(body);
 		console.log(info)
 		sendText(sender,info.Carriers.Name + "has a flight with cost: " + info.Quotes.MinPrice + "TRY")
 		sendText(sender,"Departure Time: " + info.Quotes.OutboundLeg.DepartureDate) 
 	});
+}
+
+function makeTwoDigits(n){
+    return n > 9 ? "" + n: "0" + n;
 }
 
 app.listen(app.get('port'), function() {
