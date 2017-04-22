@@ -50,6 +50,7 @@ app.post('/webhook/', function(req, res) {
 	            tripDay=makeTwoDigits(day)
 	            isFirst = 0
 	            invalidCheck=false
+	            continue
 	         }else if(invalidCheck === false){
 	         	console.log("sender: ", sender)
 	         	console.log("token: ", token)
