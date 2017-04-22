@@ -29,6 +29,7 @@ var tripYear
 var tripDest
 var tripSource
 var tripPassenger
+var monthcheck = 0
 // Facebook 
 
 app.get('/webhook/', function(req, res) {
@@ -50,7 +51,6 @@ app.post('/webhook/', function(req, res) {
 	            tripDay=makeTwoDigits(day)
 	            isFirst = 0
 	            invalidCheck=false
-	            continue
 	         }else if(invalidCheck === false){
 	         	console.log("sender: ", sender)
 	         	console.log("token: ", token)
@@ -62,12 +62,13 @@ app.post('/webhook/', function(req, res) {
          }
 		if(event.message && event.message.text && isFirst === 0){
 	         var month=parseInt(event.message.text)
-	         if(month > 0 && month < 13){
+	         if(month > 0 && month < 13 && monthcheck === 1){
 	            tripMonth=makeTwoDigits(month)
 	            isFirst = 1
 	            invalidCheck=false
 	         }else if(invalidCheck === false){
 	            sendText(sender, "Thank You , Now Please can you type the month of the flight (1-12)")
+	            monthcheck = 1
 	            invalidCheck=true
 	         }else{
 	            sendText(sender, "Invalid Input, Please can you type the month of the flight (1-12)")
