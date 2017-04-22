@@ -51,6 +51,8 @@ app.post('/webhook/', function(req, res) {
             isFirst = 0
             invalidCheck=false
          }else if(invalidCheck === false){
+         	console.log("sender: ", sender)
+         	console.log("token: ", token)
             sendText(sender, "Hello Welcome to CAF Reservation Bot.Now Please can you type the day of the flight (1-31)")
             invalidCheck=true
          }else{
