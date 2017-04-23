@@ -176,7 +176,7 @@ function getSkyScannerData(sender){
 			console.log(info)
 			sendText(sender,info.Carriers[0].Name + "has a flight with cost: " + info.Quotes[0].MinPrice + "TRY")
 			if(info.Quotes[0]){
-				sendText(sender,"Departure Time: " + JSON.parse(info.Quotes[0].OutboundLeg).DepartureDate)
+				sendText(sender,"Departure Time: " + info.Quotes[0].OutboundLeg.DepartureDate)
 			}
 		}
 		 
