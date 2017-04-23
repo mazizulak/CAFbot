@@ -48,6 +48,7 @@ app.post('/webhook/', function(req, res) {
 			 let text = event.message.text
 	         var day=parseInt(event.message.text)
 	         if(day > 0 && day < 32){
+	         	console.log("DAYi eşitledim şuna: ", day)
 	            tripDay=makeTwoDigits(day)
 	            isFirst = 0
 	            invalidCheck=false
@@ -62,12 +63,16 @@ app.post('/webhook/', function(req, res) {
          }
 		if(event.message && event.message.text && isFirst === 0){
 	         var month=parseInt(event.message.text)
+
+	         console.log("Month'u buna eşitledim: ", month)
 	         if(month > 0 && month < 13 && monthcheck === 1){
+	         	console.log("Month'u eşitledğim ife girdim")
 	            tripMonth=makeTwoDigits(month)
 	            isFirst = 1
 	            invalidCheck=false
 	         }else if(invalidCheck === false){
 	            sendText(sender, "Thank You , Now Please can you type the month of the flight (1-12)")
+	         	console.log("MONTH CHECK i 1 yaptım!!!!")
 	            monthcheck = 1
 	            invalidCheck=true
 	         }else{
@@ -174,7 +179,10 @@ function getSkyScannerData(sender){
 			sendText(sender, "There is an error due to given information please try again.")
 		}else{
 			console.log(info)
-			sendText(sender,info.Carriers[0].Name + "has a flight with cost: " + info.Quotes[0].MinPrice + "TRY")
+			if(info.Quotes[0]){
+				sendText(sender,info.Carriers[0].Name + "has a flight with cost: " + info.Quotes[0].MinPrice + "TRY")
+			}
+			
 			if(info.Quotes[0]){
 				sendText(sender,"Departure Time: " + info.Quotes[0].OutboundLeg.DepartureDate)
 			}
