@@ -44,6 +44,13 @@ app.post('/webhook/', function(req, res) {
 	for (let i = 0; i < messaging_events.length; i++) {
 		let event = messaging_events[i]
 		let sender = event.sender.id
+		if(event.message.text === 'exit'){
+			isFirst = -1
+			monthcheck = 0
+			invalidCheck = false
+			sendText(sender, "I cancelled your request. Please type a messege in order to restart a flight search")
+			continue
+		}
 		if (event.message && event.message.text && isFirst === -1) {
 			 let text = event.message.text
 	         var day=parseInt(event.message.text)
@@ -134,8 +141,7 @@ app.post('/webhook/', function(req, res) {
 	         }
          }
          if(event.message && event.message.text && isFirst === 5){
-            sendText(sender, "Congratz :))")
-            sendText(sender, tripDay+"/"+tripMonth+"/"+tripYear+" "+tripSource+"-"+tripDest+" "+tripPassenger+" Passengers")
+           
             getSkyScannerData(sender)
             if(event.message.text !== " "){
                 isFirst=-1
@@ -179,6 +185,8 @@ function getSkyScannerData(sender){
 		if(info.ValidationErrors){
 			sendText(sender, "There is an error due to given information please try again.")
 		}else{
+			sendText(sender, "Result:")
+            sendText(sender, tripDay+"/"+tripMonth+"/"+tripYear+" "+tripSource+"-"+tripDest+" "+tripPassenger+" Passengers")
 			console.log(info)
 			if(info.Quotes[0]){
 				sendText(sender,info.Carriers[0].Name + "has a flight with cost: " + info.Quotes[0].MinPrice + "TRY")
