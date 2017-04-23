@@ -45,7 +45,7 @@ app.post('/webhook/', function(req, res) {
 		let event = messaging_events[i]
 		let sender = event.sender.id
 		if (event.message && event.message.text ) {
-			if(event.message.text === 'exit'){
+			if(event.message.text.toLowerCase() === 'exit'){
 				isFirst = -1
 				monthcheck = 0
 				invalidCheck = false
@@ -107,10 +107,10 @@ app.post('/webhook/', function(req, res) {
             isFirst = 3
             invalidCheck=false
          }else if(invalidCheck === false){
-            sendText(sender, "Please Enter the Source City")
+            sendText(sender, "Please Enter the Departure Airport")
             invalidCheck=true
          }else{
-            sendText(sender, "Invalid Input, Please Enter Correct Source City")
+            sendText(sender, "Invalid Input, Please Enter Correct Departure Airport")
          }
          }
          if(event.message && event.message.text && isFirst === 3){
@@ -120,11 +120,11 @@ app.post('/webhook/', function(req, res) {
             invalidCheck=false
          }
          else if(invalidCheck === false){
-            sendText(sender, "Please Enter the Destination City")
+            sendText(sender, "Please Enter the Arrival Airport")
             invalidCheck=true
          }
          else{
-            sendText(sender, "Invalid Input, Please Enter Correct Destination City")
+            sendText(sender, "Invalid Input, Please Enter Correct Arrival Airport")
          }
          }
          if(event.message && event.message.text && isFirst === 4){
@@ -135,7 +135,7 @@ app.post('/webhook/', function(req, res) {
 		         invalidCheck=false
 	         }
 	         else if(invalidCheck === false){
-	            sendText(sender, "Please Enter Passanger Number (1-10)")
+	            sendText(sender, "Please Enter Passenger Number (1-10)")
 	            invalidCheck=true
 	         }
 	         else{
@@ -191,7 +191,7 @@ function getSkyScannerData(sender){
             sendText(sender, tripDay+"/"+tripMonth+"/"+tripYear+" "+tripSource+"-"+tripDest+" "+tripPassenger+" Passengers")
 			console.log(info)
 			if(info.Quotes[0]){
-				sendText(sender,info.Carriers[0].Name + "has a flight with cost: " + info.Quotes[0].MinPrice + "TRY")
+				sendText(sender,info.Carriers[0].Name + " has a flight with cost: " + info.Quotes[0].MinPrice + "TRY")
 			}
 			
 			if(info.Quotes[0]){
