@@ -174,7 +174,7 @@ function getSkyScannerData(sender){
 			sendText(sender, "There is an error due to given information please try again.")
 		}else{
 			console.log(info)
-			sendText(sender,info.Carriers.Name + "has a flight with cost: " + info.Quotes.MinPrice + "TRY")
+			sendText(sender,info.Carriers[0].Name + "has a flight with cost: " + info.Quotes[0].MinPrice + "TRY")
 			//sendText(sender,"Departure Time: " + JSON.parse(info.Quotes.OutboundLeg).DepartureDate)
 		}
 		 
