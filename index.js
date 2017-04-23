@@ -44,12 +44,14 @@ app.post('/webhook/', function(req, res) {
 	for (let i = 0; i < messaging_events.length; i++) {
 		let event = messaging_events[i]
 		let sender = event.sender.id
-		if(event.message.text === 'exit'){
-			isFirst = -1
-			monthcheck = 0
-			invalidCheck = false
-			sendText(sender, "I cancelled your request. Please type a messege in order to restart a flight search")
-			continue
+		if (event.message && event.message.text ) {
+			if(event.message.text === 'exit'){
+				isFirst = -1
+				monthcheck = 0
+				invalidCheck = false
+				sendText(sender, "I cancelled your request. Please type a messege in order to restart a flight search")
+				continue
+			}
 		}
 		if (event.message && event.message.text && isFirst === -1) {
 			 let text = event.message.text
